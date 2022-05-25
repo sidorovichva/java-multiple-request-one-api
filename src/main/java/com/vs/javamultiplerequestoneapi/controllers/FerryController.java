@@ -1,8 +1,8 @@
-package com.vs.javamultiplerequestoneapi.controller;
+package com.vs.javamultiplerequestoneapi.controllers;
 
-import com.vs.javamultiplerequestoneapi.model.ferries.FerryTestResult;
-import com.vs.javamultiplerequestoneapi.model.ferries.PricingFerryRequest;
-import com.vs.javamultiplerequestoneapi.service.FerryService;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.FerryTestResult;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
+import com.vs.javamultiplerequestoneapi.services.FerryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

@@ -1,10 +1,11 @@
-package com.vs.javamultiplerequestoneapi.model.flights;
+package com.vs.javamultiplerequestoneapi.models.requests.flights;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.LinkedList;
 import java.util.List;
 
 @Data
@@ -14,4 +15,6 @@ import java.util.List;
 public class PricingFlightsRequest {
 
     private List<Flight> flight;
+    private List<Integer> alloweddelay = new LinkedList<>();
+    private List<Boolean> givenFlightNotCancelled = new LinkedList<>();
 }

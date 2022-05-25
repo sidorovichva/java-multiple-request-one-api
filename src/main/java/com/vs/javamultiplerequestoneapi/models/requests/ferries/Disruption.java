@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.model.ferries;
+package com.vs.javamultiplerequestoneapi.models.requests.ferries;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

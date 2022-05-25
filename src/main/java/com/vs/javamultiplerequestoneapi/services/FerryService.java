@@ -1,10 +1,10 @@
-package com.vs.javamultiplerequestoneapi.service;
+package com.vs.javamultiplerequestoneapi.services;
 
-import com.vs.javamultiplerequestoneapi.DP;
-import com.vs.javamultiplerequestoneapi.Fetcher;
+import com.vs.javamultiplerequestoneapi.enums.DP;
+import com.vs.javamultiplerequestoneapi.fetchers.PricingResponseFetcher;
 import com.vs.javamultiplerequestoneapi.ferries.FerriesRequestPreparation;
-import com.vs.javamultiplerequestoneapi.model.ferries.FerryTestResult;
-import com.vs.javamultiplerequestoneapi.model.ferries.PricingFerryRequest;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.FerryTestResult;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 public class FerryService {
 
     private final FerriesRequestPreparation ferriesRequestPreparation;
-    private final Fetcher fetcher;
+    private final PricingResponseFetcher pricingResponseFetcher;
 
     public List<FerryTestResult> getFerryTestResult(int quantity) throws IOException {
         List<PricingFerryRequest> listOfRequests = ferriesRequestPreparation.getListOfFerryRequests(quantity);
@@ -28,7 +28,7 @@ public class FerryService {
         return listOfRequests.stream()
                 .map(request -> FerryTestResult.builder()
                                 .request(request)
-                                .risk(fetcher.getPricingResponse(DP.Ferry, request).getProbability().get(0))
+                                .risk(pricingResponseFetcher.getPricingResponse(DP.Ferry, request).getProbability().get(0))
                                 .dateTime(LocalDate.now())
                                 .build())
                 .filter(result -> {
@@ -42,6 +42,6 @@ public class FerryService {
     }
 
     public List<Double> getRiskByOneRequest(PricingFerryRequest request) {
-        return fetcher.getPricingResponse(DP.Ferry, request).getProbability();
+        return pricingResponseFetcher.getPricingResponse(DP.Ferry, request).getProbability();
     }
 }

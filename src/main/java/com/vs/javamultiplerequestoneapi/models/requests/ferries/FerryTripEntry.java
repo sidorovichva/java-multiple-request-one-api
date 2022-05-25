@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.model.ferries;
+package com.vs.javamultiplerequestoneapi.models.requests.ferries;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.model;
+package com.vs.javamultiplerequestoneapi.models.responses.pricing;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

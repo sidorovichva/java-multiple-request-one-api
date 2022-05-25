@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.model.ferries;
+package com.vs.javamultiplerequestoneapi.models.requests.flights;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -9,10 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PricingFerryItinerary {
+public class Flight {
 
     private String id;
+    private int number;
     private String operator;
-    private FerryTripEntry departure;
-    private FerryTripEntry arrival;
+    private String marketer;
+    private FlightSub departure;
+    private FlightSub arrival;
 }

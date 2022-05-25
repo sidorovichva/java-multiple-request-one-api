@@ -1,9 +1,9 @@
 package com.vs.javamultiplerequestoneapi.ferries;
 
-import com.vs.javamultiplerequestoneapi.model.ferries.Disruption;
-import com.vs.javamultiplerequestoneapi.model.ferries.FerryTripEntry;
-import com.vs.javamultiplerequestoneapi.model.ferries.PricingFerryItinerary;
-import com.vs.javamultiplerequestoneapi.model.ferries.PricingFerryRequest;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.Disruption;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.FerryTripEntry;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryItinerary;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;

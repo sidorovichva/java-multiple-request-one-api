@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.model.flights;
+package com.vs.javamultiplerequestoneapi.models.requests.flights;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

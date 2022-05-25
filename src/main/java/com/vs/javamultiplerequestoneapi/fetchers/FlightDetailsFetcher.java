@@ -1,29 +1,28 @@
-package com.vs.javamultiplerequestoneapi;
+package com.vs.javamultiplerequestoneapi.fetchers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.vs.javamultiplerequestoneapi.model.*;
-import com.vs.javamultiplerequestoneapi.model.ferries.PricingFerryRequest;
+import com.vs.javamultiplerequestoneapi.enums.DP;
+import com.vs.javamultiplerequestoneapi.models.responses.pricing.PricingResponse;
+import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
-import java.net.http.HttpRequest.BodyPublishers;
 import java.net.http.HttpResponse;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j
-public class Fetcher {
+public class FlightDetailsFetcher {
 
     private final ObjectMapper objectMapper;
 
-    public PricingResponse getPricingResponse(
+    public PricingResponse getFlightDetailOtaResponse(
             DP dp,
             PricingFerryRequest pricingFerryRequest
     ) {
@@ -38,7 +37,7 @@ public class Fetcher {
         }
 
         HttpRequest request = HttpRequest.newBuilder()
-                .POST(BodyPublishers.ofString(message))
+                .POST(HttpRequest.BodyPublishers.ofString(message))
                 .header("Content-type", "application/json")
                 .uri(URI.create(dp.getLink()))
                 .build();
