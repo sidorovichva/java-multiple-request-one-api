@@ -2,8 +2,8 @@ package com.vs.javamultiplerequestoneapi;
 
 public enum DP {
 
-    Flight("http://qa-setoopricing.isetoo.com:8099/flightsOverallDelay"),
-    Ferry("http://qa-setoopricing.isetoo.com:8099/ferriesArrivalDelay");
+    Flight(""),
+    Ferry("");
 
     private final String link;
 
