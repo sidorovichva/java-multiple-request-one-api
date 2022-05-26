@@ -76,6 +76,9 @@ public class FlightDetailsFetcher {
             return null;
         }
 
+        if (detailedFlightDTO.getFlight() == null)
+            return null;
+
         return detailedFlightDTO;
     }
 }

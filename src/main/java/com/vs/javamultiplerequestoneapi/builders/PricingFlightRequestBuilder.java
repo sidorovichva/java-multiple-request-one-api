@@ -29,17 +29,17 @@ public class PricingFlightRequestBuilder extends RequestBuilder {
 
         Flight flight = Flight.builder()
                 .id(dto.getFlightDate() + dto.getDepartureAirport().getCode() + dto.getArrivalAirport().getCode() + dto.getFlightId())
-                .number(Integer.parseInt(dto.getFlightId().replaceAll("^[A-Z]+", "")))
+                .number(dto.getFlight().getFlightNumber())
                 .operator(dto.getAirlineId())
-                .marketer(dto.getFlightId().replaceAll("\\d+$", ""))
+                .marketer(dto.getFlight().getAirlineId())
                 .departure(departure)
                 .arrival(arrival)
                 .build();
 
         return PricingFlightsRequest.builder()
                 .flight(List.of(flight))
-                .alloweddelay(List.of(60, 120))
-                .givenFlightNotCancelled(List.of(true, true))
+                .alloweddelay(List.of(60, 120, 180, 10000))
+                .givenFlightNotCancelled(List.of(true, true, true, false))
                 .build();
     }
 }
