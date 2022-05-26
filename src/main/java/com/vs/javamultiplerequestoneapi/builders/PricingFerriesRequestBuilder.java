@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.ferries;
+package com.vs.javamultiplerequestoneapi.builders;
 
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.Disruption;
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.FerryTripEntry;
@@ -14,12 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class FerriesRequestPreparation {
+public class PricingFerriesRequestBuilder extends RequestBuilder {
 
     private static final String file = "files/ferries2022-1.csv";
     private static final double delay =120.;
     private static final boolean givenNotCancelled = true;
-    private static final String separator = ",";
     private static final String countryPrefix = "GR";
 
     public List<PricingFerryRequest> getListOfFerryRequests(int quantity) throws IOException {

@@ -2,9 +2,9 @@ package com.vs.javamultiplerequestoneapi.services;
 
 import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.fetchers.PricingResponseFetcher;
-import com.vs.javamultiplerequestoneapi.ferries.FerriesRequestPreparation;
-import com.vs.javamultiplerequestoneapi.models.requests.ferries.FerryTestResult;
+import com.vs.javamultiplerequestoneapi.builders.PricingFerriesRequestBuilder;
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
+import com.vs.javamultiplerequestoneapi.models.requests.results.FerryTestResult;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Slf4j
 public class FerryService {
 
-    private final FerriesRequestPreparation ferriesRequestPreparation;
+    private final PricingFerriesRequestBuilder ferriesRequestPreparation;
     private final PricingResponseFetcher pricingResponseFetcher;
 
     public List<FerryTestResult> getFerryTestResult(int quantity) throws IOException {
@@ -28,11 +28,11 @@ public class FerryService {
         return listOfRequests.stream()
                 .map(request -> FerryTestResult.builder()
                                 .request(request)
-                                .risk(pricingResponseFetcher.getPricingResponse(DP.Ferry, request).getProbability().get(0))
+                                .risk(pricingResponseFetcher.getPricingResponseForFerry(DP.Ferry, request).getProbability())
                                 .dateTime(LocalDate.now())
                                 .build())
                 .filter(result -> {
-                    if (result.getRisk() == 0) {
+                    if (result == null) {
                         log.warn("result was filtered: {}", result);
                         return false;
                     }
@@ -42,6 +42,6 @@ public class FerryService {
     }
 
     public List<Double> getRiskByOneRequest(PricingFerryRequest request) {
-        return pricingResponseFetcher.getPricingResponse(DP.Ferry, request).getProbability();
+        return pricingResponseFetcher.getPricingResponseForFerry(DP.Ferry, request).getProbability();
     }
 }

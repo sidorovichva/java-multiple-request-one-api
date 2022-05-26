@@ -9,12 +9,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Flight {
+public class FlightDetailsRequest {
 
-    private String id;
-    private int number;
-    private String operator;
-    private String marketer;
-    private FlightSub arrival;
-    private FlightSub departure;
+    private int flightNumber;
+    private String airlineId;
+    private String departingDate;
+    private String originAirportId;
+    private String destinationAirportId;
 }
