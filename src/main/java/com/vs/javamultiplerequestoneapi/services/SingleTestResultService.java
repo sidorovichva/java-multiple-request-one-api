@@ -15,7 +15,7 @@ public class SingleTestResultService {
     private final SingleTestResultRepository repository;
 
     public List<SingleTestResult> getAllSingleTestResultsInLastXDays(int days) {
-        return repository.findByDateAfter(LocalDateTime.now().minusDays(days).withHour(1).withMinute(0));
+        return repository.findByDateAfter(LocalDateTime.now().minusDays(days).withHour(0).withMinute(0));
     }
 
     public List<SingleTestResult> getAllSingleTestResultsByDelayInLastXDays(int delay, int days) {

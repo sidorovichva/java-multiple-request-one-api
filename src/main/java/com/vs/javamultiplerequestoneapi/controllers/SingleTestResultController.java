@@ -1,6 +1,7 @@
 package com.vs.javamultiplerequestoneapi.controllers;
 
 import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
+import com.vs.javamultiplerequestoneapi.models.requests.results.TestResult;
 import com.vs.javamultiplerequestoneapi.services.SingleTestResultService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

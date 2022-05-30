@@ -14,9 +14,7 @@ import java.util.List;
 @Builder
 public class TestResult {
 
-    private List<String> id;
-    private List<LocalDateTime> date;
-    private List<Integer> delay;
-    private List<Boolean> notCancelled;
-    private List<Double> risk;
+    private String id;
+    private LocalDateTime date;
+    private List<SingleTestResult> singleTestResult;
 }
