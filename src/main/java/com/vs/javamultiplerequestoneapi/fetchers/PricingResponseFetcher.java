@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import com.vs.javamultiplerequestoneapi.models.requests.flights.PricingFlightsRequest;
+import com.vs.javamultiplerequestoneapi.models.requests.weather.PricingWXRequest;
 import com.vs.javamultiplerequestoneapi.models.responses.pricing.PricingResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +26,7 @@ public class PricingResponseFetcher {
     private final ObjectMapper objectMapper;
 
     public PricingResponse getPricingResponseForFerry(
-            DP dp,
+            String link,
             PricingFerryRequest pricingFerryRequest
     ) {
         HttpClient client = HttpClient.newHttpClient();
@@ -41,7 +42,7 @@ public class PricingResponseFetcher {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(BodyPublishers.ofString(message))
                 .header("Content-type", "application/json")
-                .uri(URI.create(dp.getLink()))
+                .uri(URI.create(link))
                 .version(HttpClient.Version.HTTP_2)
                 .build();
 
@@ -85,7 +86,52 @@ public class PricingResponseFetcher {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(BodyPublishers.ofString(message))
                 .header("Content-type", "application/json")
-                .uri(URI.create(dp.getLink()))
+                .uri(URI.create(""))
+                .version(HttpClient.Version.HTTP_2)
+                .build();
+
+        HttpResponse<String> response;
+        try {
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (IOException | InterruptedException e) {
+            log.error("Error while receiving response from the pricing server: {}", request.toString());
+            return null;
+        }
+
+        String responseBody = response.body()
+                .replaceAll("^\\[", "")
+                .replaceAll("]$", "");
+
+        PricingResponse pricingResponse;
+        try {
+            pricingResponse = objectMapper.readValue(responseBody, PricingResponse.class);
+        } catch (JsonProcessingException e) {
+            log.error("Error while parsing pricing server response: {}", responseBody);
+            return null;
+        }
+
+        return pricingResponse;
+    }
+
+    public PricingResponse getPricingResponseForWeather(
+            PricingWXRequest pricingWeatherRequest,
+            String product,
+            String link
+    ) {
+        HttpClient client = HttpClient.newHttpClient();
+
+        String message = "";
+        try {
+            message = objectMapper.writeValueAsString(pricingWeatherRequest);
+        } catch (JsonProcessingException e) {
+            log.error("Error while formatting request body: {}", pricingWeatherRequest.toString());
+            return null;
+        }
+
+        HttpRequest request = HttpRequest.newBuilder()
+                .POST(BodyPublishers.ofString(message))
+                .header("Content-type", "application/json")
+                .uri(URI.create(link + product))
                 .version(HttpClient.Version.HTTP_2)
                 .build();
 

@@ -18,7 +18,7 @@ public class FlightController {
     private final FlightService service;
 
     @GetMapping("/getFlightTestResult")
-    public List<FlightTestResult> getFerryTestResultByCsvFile(@RequestParam int quantity) throws IOException {
+    public List<FlightTestResult> getFlightTestResultByCsvFile(@RequestParam int quantity) throws IOException {
         return service.getFlightTestResult(quantity);
     }
 

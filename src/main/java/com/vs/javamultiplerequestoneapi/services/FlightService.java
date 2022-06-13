@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class FlightService {
+public class FlightService extends AbstractService {
 
     private final FlightDetailsRequestBuilder flightDetailsRequestBuilder;
     private final PricingFlightRequestBuilder pricingFlightRequestBuilder;
@@ -82,6 +82,7 @@ public class FlightService {
             }
         });
 
+        saveToCSV(singleTestResults, DP.Flight);
         repository.saveAll(singleTestResults);
 
         return singleTestResults;

@@ -22,13 +22,15 @@ public class FerryService {
     private final PricingFerriesRequestBuilder ferriesRequestPreparation;
     private final PricingResponseFetcher pricingResponseFetcher;
 
-    public List<FerryTestResult> getFerryTestResult(int quantity) throws IOException {
+    public List<FerryTestResult> getFerryTestResult(int quantity, String link) throws IOException {
         List<PricingFerryRequest> listOfRequests = ferriesRequestPreparation.getListOfFerryRequests(quantity);
+
+
 
         return listOfRequests.stream()
                 .map(request -> FerryTestResult.builder()
                                 .request(request)
-                                .risk(pricingResponseFetcher.getPricingResponseForFerry(DP.Ferry, request).getProbability())
+                                .risk(pricingResponseFetcher.getPricingResponseForFerry(link, request).getProbability())
                                 .dateTime(LocalDate.now())
                                 .build())
                 .filter(result -> {
@@ -41,7 +43,7 @@ public class FerryService {
                 .collect(Collectors.toList());
     }
 
-    public List<Double> getRiskByOneRequest(PricingFerryRequest request) {
-        return pricingResponseFetcher.getPricingResponseForFerry(DP.Ferry, request).getProbability();
+    public List<Double> getRiskByOneRequest(PricingFerryRequest request, String link) {
+        return pricingResponseFetcher.getPricingResponseForFerry(link, request).getProbability();
     }
 }

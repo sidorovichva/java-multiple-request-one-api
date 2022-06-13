@@ -23,4 +23,12 @@ public class SingleTestResult {
     private Integer delay;
     private Boolean notCancelled;
     private Double risk;
+
+    public String csvHeader() {
+        return "id,date,delay,notCancelled,risk";
+    }
+
+    public String toCsvRow() {
+        return id + ',' + date + ',' + delay + ',' + notCancelled + ',' + risk;
+    }
 }
