@@ -15,6 +15,7 @@ public class PricingWXRequest {
     private List<Double> amount;
     private List<String> days;
     private List<WXEvent> events;
+    private Product product; // used for Solar Panels. In other cases may be omitted in a body of the request
 
     public PricingWXRequest(Integer rainyDayThreshold,
                             Integer daysToMeasure,
@@ -56,5 +57,22 @@ public class PricingWXRequest {
             this.id = id;
 
         }
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Product {
+        private Double price;
+        private Compensation compensation;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class Compensation {
+        private Double unit;
+        private Double minimum;
+        private Double maximum;
     }
 }
