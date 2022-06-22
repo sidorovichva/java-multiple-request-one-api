@@ -1,5 +1,6 @@
 package com.vs.javamultiplerequestoneapi.controllers;
 
+import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.models.requests.flights.PricingFlightsRequest;
 import com.vs.javamultiplerequestoneapi.models.requests.results.FlightTestResult;
 import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
@@ -18,17 +19,28 @@ public class FlightController {
     private final FlightService service;
 
     @GetMapping("/getFlightTestResult")
-    public List<FlightTestResult> getFlightTestResultByCsvFile(@RequestParam int quantity) throws IOException {
-        return service.getFlightTestResult(quantity);
+    public List<FlightTestResult> getFlightTestResultByCsvFile(
+            @RequestParam int quantity,
+            @RequestParam String env
+    ) throws IOException {
+        return service.getFlightTestResultByCsvFile(quantity, DP.FlightEnvs.CI.getEnvironment(env));
     }
 
-    @GetMapping("/getListOfSingleTestResults")
-    public List<SingleTestResult> getListOfSingleTestResults(@RequestParam int quantity) throws IOException {
-        return service.getSingleTestResults(quantity);
+    @GetMapping("/getFlightTestResultAndSave")
+    public List<SingleTestResult> getListOfSingleTestResults(
+            @RequestParam int quantity,
+            @RequestParam String env
+    ) throws IOException {
+        return service.getSingleTestResults(quantity, DP.FlightEnvs.CI.getEnvironment(env));
     }
 
-    @GetMapping("/execute/byRequest")
+    /*@GetMapping("/execute/byRequest")
     public List<Double> getRiskByOneRequest(@RequestBody PricingFlightsRequest request) {
         return service.getRiskByOneRequest(request);
+    }*/
+
+    @GetMapping("/flightTestSample/{api}/{quantity}")
+    public Integer getFlightTestSample(@PathVariable String api, @PathVariable Integer quantity) {
+        return service.getFlightTestSample(api, quantity);
     }
 }

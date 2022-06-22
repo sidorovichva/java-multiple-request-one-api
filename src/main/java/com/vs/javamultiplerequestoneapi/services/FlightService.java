@@ -5,6 +5,7 @@ import com.vs.javamultiplerequestoneapi.builders.PricingFlightRequestBuilder;
 import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.enums.SOURCE;
 import com.vs.javamultiplerequestoneapi.fetchers.FlightDetailsFetcher;
+import com.vs.javamultiplerequestoneapi.fetchers.FlightTestSample;
 import com.vs.javamultiplerequestoneapi.fetchers.PricingResponseFetcher;
 import com.vs.javamultiplerequestoneapi.models.requests.flights.FlightDetailsRequest;
 import com.vs.javamultiplerequestoneapi.models.requests.flights.PricingFlightsRequest;
@@ -34,8 +35,9 @@ public class FlightService extends AbstractService {
     private final FlightDetailsFetcher fetcher;
     private final PricingResponseFetcher pricingResponseFetcher;
     private final SingleTestResultRepository repository;
+    private final FlightTestSample flightTestSample;
 
-    public List<FlightTestResult> getFlightTestResult(int quantity) throws IOException {
+    public List<FlightTestResult> getFlightTestResultByCsvFile(int quantity, String link) throws IOException {
         final List<FlightDetailsRequest> flightDetailsRequests = flightDetailsRequestBuilder.buildListOfFlightDetailsRequests(quantity);
 
         final List<DetailedFlightDTO> detailedFlightDTOs = flightDetailsRequests.stream()
@@ -50,7 +52,7 @@ public class FlightService extends AbstractService {
         final List<FlightTestResult> flightTestResults = pricingFlightsRequests.stream()
                 .map(request -> FlightTestResult.builder()
                         .request(request)
-                        .risk(pricingResponseFetcher.getPricingResponseForFlight(DP.Flight, request).getProbability())
+                        .risk(pricingResponseFetcher.getPricingResponseForFlight(link, request).getProbability())
                         .dateTime(LocalDate.now())
                         .build())
                 .filter(result -> {
@@ -65,8 +67,8 @@ public class FlightService extends AbstractService {
         return flightTestResults;
     }
 
-    public List<SingleTestResult> getSingleTestResults(int quantity) throws IOException {
-        final List<FlightTestResult> flightTestResults = getFlightTestResult(quantity);
+    public List<SingleTestResult> getSingleTestResults(int quantity, String link) throws IOException {
+        final List<FlightTestResult> flightTestResults = getFlightTestResultByCsvFile(quantity, link);
 
         List<SingleTestResult> singleTestResults = new ArrayList<>();
 
@@ -88,7 +90,11 @@ public class FlightService extends AbstractService {
         return singleTestResults;
     }
 
-    public List<Double> getRiskByOneRequest(PricingFlightsRequest request) {
+    /*public List<Double> getRiskByOneRequest(PricingFlightsRequest request) {
         return pricingResponseFetcher.getPricingResponseForFlight(DP.Flight, request).getProbability();
+    }*/
+
+    public Integer getFlightTestSample(String service, int quantity) {
+        return flightTestSample.getFlightTestSample(SOURCE.pricing, service, quantity);
     }
 }

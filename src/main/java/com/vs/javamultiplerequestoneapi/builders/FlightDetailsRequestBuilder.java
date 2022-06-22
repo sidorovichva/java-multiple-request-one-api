@@ -12,7 +12,8 @@ import java.util.List;
 @Component
 public class FlightDetailsRequestBuilder extends RequestBuilder {
 
-    private static final String file = "files/flights2022-05.csv";
+    //private static final String file = "files/flights2022-05.csv";
+    private static final String file = "files/flightTestSample.csv";
 
     public List<FlightDetailsRequest> buildListOfFlightDetailsRequests(int quantity) throws IOException {
 

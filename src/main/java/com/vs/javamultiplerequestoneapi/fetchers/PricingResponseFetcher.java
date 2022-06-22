@@ -70,7 +70,7 @@ public class PricingResponseFetcher {
     }
 
     public PricingResponse getPricingResponseForFlight(
-            DP dp,
+            String link,
             PricingFlightsRequest pricingFlightsRequest
     ) {
         HttpClient client = HttpClient.newHttpClient();
@@ -86,7 +86,7 @@ public class PricingResponseFetcher {
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(BodyPublishers.ofString(message))
                 .header("Content-type", "application/json")
-                .uri(URI.create(""))
+                .uri(URI.create(link))
                 .version(HttpClient.Version.HTTP_2)
                 .build();
 
