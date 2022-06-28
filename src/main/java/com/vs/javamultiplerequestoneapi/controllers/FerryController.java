@@ -3,6 +3,7 @@ package com.vs.javamultiplerequestoneapi.controllers;
 import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import com.vs.javamultiplerequestoneapi.models.requests.results.FerryTestResult;
+import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
 import com.vs.javamultiplerequestoneapi.services.FerryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,14 +16,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class FerryController {
 
-    private final FerryService ferryService;
+    private final FerryService service;
 
     @GetMapping("/execute")
     public List<FerryTestResult> getFerryTestResultByCsvFile(
             @RequestParam int quantity,
             @RequestParam String env
     ) throws IOException {
-        return ferryService.getFerryTestResult(quantity, DP.FerryEnvs.CI.getEnvironment(env));
+        return service.getFerryTestResult(quantity, DP.FerryEnvs.CI.getEnvironment(env));
     }
 
     @GetMapping("/execute/byRequest")
@@ -30,6 +31,14 @@ public class FerryController {
             @RequestBody PricingFerryRequest request,
             @RequestParam String env
     ) {
-        return ferryService.getRiskByOneRequest(request, DP.FerryEnvs.CI.getEnvironment(env));
+        return service.getRiskByOneRequest(request, DP.FerryEnvs.CI.getEnvironment(env));
+    }
+
+    @GetMapping("/getFerryTestResultAndSave")
+    public List<SingleTestResult> getListOfSingleTestResults(
+            @RequestParam int quantity,
+            @RequestParam String env
+    ) throws IOException {
+        return service.getSingleTestResults(quantity, DP.FerryEnvs.CI.getEnvironment(env));
     }
 }

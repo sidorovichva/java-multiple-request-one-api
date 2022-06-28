@@ -16,8 +16,8 @@ import java.util.List;
 @Component
 public class PricingFerriesRequestBuilder extends RequestBuilder {
 
-    private static final String file = "files/ferries2022-1.csv";
-    private static final double delay =120.;
+    private static final String file = "files/2022-2.csv";
+    private static final double delay =60.;
     private static final boolean givenNotCancelled = true;
     private static final String countryPrefix = "GR";
 
