@@ -1,6 +1,7 @@
 package com.vs.javamultiplerequestoneapi.models.requests.weather;
 
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,8 @@ import java.util.List;
 
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class PricingWXRequest {
     private List<Double> amount;
     private List<String> days;
@@ -38,6 +41,7 @@ public class PricingWXRequest {
     @Data
     @NoArgsConstructor
     @AllArgsConstructor
+    @Builder
     public static class Location {
         private Double latitude;
         private Double longitude;
@@ -46,6 +50,8 @@ public class PricingWXRequest {
 
     @Data
     @NoArgsConstructor
+    @AllArgsConstructor
+    @Builder
     public static class WXEvent {
         private String id;
         private String date;

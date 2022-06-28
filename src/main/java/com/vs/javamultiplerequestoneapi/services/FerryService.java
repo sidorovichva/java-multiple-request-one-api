@@ -28,8 +28,8 @@ public class FerryService extends AbstractService{
     private final PricingResponseFetcher pricingResponseFetcher;
     private final SingleTestResultRepository repository;
 
-    public List<FerryTestResult> getFerryTestResult(int quantity, String link) throws IOException {
-        List<PricingFerryRequest> listOfRequests = ferriesRequestPreparation.getListOfFerryRequests(quantity);
+    public List<FerryTestResult> getFerryTestResult(int quantity, String link, int delay) throws IOException {
+        List<PricingFerryRequest> listOfRequests = ferriesRequestPreparation.getListOfFerryRequests(quantity, delay);
 
         return listOfRequests.stream()
                 .map(request -> FerryTestResult.builder()
@@ -47,8 +47,8 @@ public class FerryService extends AbstractService{
                 .collect(Collectors.toList());
     }
 
-    public List<SingleTestResult> getSingleTestResults(int quantity, String link) throws IOException {
-        final List<FerryTestResult> ferryTestResults = getFerryTestResult(quantity, link);
+    public List<SingleTestResult> getSingleTestResults(int quantity, String link, int delay) throws IOException {
+        final List<FerryTestResult> ferryTestResults = getFerryTestResult(quantity, link, delay);
 
         List<SingleTestResult> singleTestResults = new ArrayList<>();
 
@@ -64,7 +64,7 @@ public class FerryService extends AbstractService{
             }
         });
 
-        saveToCSV(singleTestResults, DP.Flight);
+        saveToCSV(singleTestResults, DP.Ferry);
         repository.saveAll(singleTestResults);
 
         return singleTestResults;

@@ -21,9 +21,10 @@ public class FerryController {
     @GetMapping("/execute")
     public List<FerryTestResult> getFerryTestResultByCsvFile(
             @RequestParam int quantity,
-            @RequestParam String env
+            @RequestParam String env,
+            @RequestParam int delay
     ) throws IOException {
-        return service.getFerryTestResult(quantity, DP.FerryEnvs.CI.getEnvironment(env));
+        return service.getFerryTestResult(quantity, DP.FerryEnvs.CI.getEnvironment(env), delay);
     }
 
     @GetMapping("/execute/byRequest")
@@ -37,8 +38,9 @@ public class FerryController {
     @GetMapping("/getFerryTestResultAndSave")
     public List<SingleTestResult> getListOfSingleTestResults(
             @RequestParam int quantity,
-            @RequestParam String env
+            @RequestParam String env,
+            @RequestParam int delay
     ) throws IOException {
-        return service.getSingleTestResults(quantity, DP.FerryEnvs.CI.getEnvironment(env));
+        return service.getSingleTestResults(quantity, DP.FerryEnvs.CI.getEnvironment(env), delay);
     }
 }

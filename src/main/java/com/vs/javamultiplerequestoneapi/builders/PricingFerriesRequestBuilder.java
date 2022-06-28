@@ -17,11 +17,10 @@ import java.util.List;
 public class PricingFerriesRequestBuilder extends RequestBuilder {
 
     private static final String file = "files/2022-2.csv";
-    private static final double delay =60.;
     private static final boolean givenNotCancelled = true;
     private static final String countryPrefix = "GR";
 
-    public List<PricingFerryRequest> getListOfFerryRequests(int quantity) throws IOException {
+    public List<PricingFerryRequest> getListOfFerryRequests(int quantity, int delay) throws IOException {
 
         List<PricingFerryRequest> list = new ArrayList<>();
         int counter = 0;
@@ -67,7 +66,7 @@ public class PricingFerriesRequestBuilder extends RequestBuilder {
                     .build();
 
             Disruption disruption = Disruption.builder()
-                    .delay(delay)
+                    .delay((double) delay)
                     .givenNotCancelled(givenNotCancelled)
                     .build();
 
