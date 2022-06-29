@@ -1,8 +1,8 @@
 package com.vs.javamultiplerequestoneapi.controllers;
 
 import com.vs.javamultiplerequestoneapi.enums.DP;
-import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
 import com.vs.javamultiplerequestoneapi.models.requests.weather.PricingWXRequest;
+import com.vs.javamultiplerequestoneapi.models.results.WeatherTestResult;
 import com.vs.javamultiplerequestoneapi.services.WeatherService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +27,7 @@ public class WeatherController {
     }
 
     @GetMapping("/getWeatherTestResultAndSave")
-    public List<SingleTestResult> getListOfSingleTestResults(
+    public List<WeatherTestResult> getListOfSingleTestResults(
             @RequestParam int quantity,
             @RequestParam String product,
             @RequestParam String env

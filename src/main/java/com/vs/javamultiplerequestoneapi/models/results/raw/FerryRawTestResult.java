@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.models.requests.results;
+package com.vs.javamultiplerequestoneapi.models.results.raw;
 
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import lombok.*;
@@ -10,7 +10,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FerryTestResult {
+public class FerryRawTestResult {
 
     private LocalDate dateTime;
     private PricingFerryRequest request;

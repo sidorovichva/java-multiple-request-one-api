@@ -9,10 +9,10 @@ import com.vs.javamultiplerequestoneapi.fetchers.FlightTestSample;
 import com.vs.javamultiplerequestoneapi.fetchers.PricingResponseFetcher;
 import com.vs.javamultiplerequestoneapi.models.requests.flights.FlightDetailsRequest;
 import com.vs.javamultiplerequestoneapi.models.requests.flights.PricingFlightsRequest;
-import com.vs.javamultiplerequestoneapi.models.requests.results.FlightTestResult;
-import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.raw.FlightRawTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.TransportationTestResult;
 import com.vs.javamultiplerequestoneapi.models.responses.ota.DetailedFlightDTO;
-import com.vs.javamultiplerequestoneapi.repositories.SingleTestResultRepository;
+import com.vs.javamultiplerequestoneapi.repositories.TransportationTestResultRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -34,10 +34,10 @@ public class FlightService extends AbstractService {
     private final PricingFlightRequestBuilder pricingFlightRequestBuilder;
     private final FlightDetailsFetcher fetcher;
     private final PricingResponseFetcher pricingResponseFetcher;
-    private final SingleTestResultRepository repository;
+    private final TransportationTestResultRepository repository;
     private final FlightTestSample flightTestSample;
 
-    public List<FlightTestResult> getFlightTestResultByCsvFile(int quantity, String link) throws IOException {
+    public List<FlightRawTestResult> getFlightTestResultByCsvFile(int quantity, String link) throws IOException {
         final List<FlightDetailsRequest> flightDetailsRequests = flightDetailsRequestBuilder.buildListOfFlightDetailsRequests(quantity);
 
         final List<DetailedFlightDTO> detailedFlightDTOs = flightDetailsRequests.stream()
@@ -49,8 +49,8 @@ public class FlightService extends AbstractService {
                 .map(pricingFlightRequestBuilder::buildPricingFlightRequest)
                 .collect(Collectors.toList());
 
-        final List<FlightTestResult> flightTestResults = pricingFlightsRequests.stream()
-                .map(request -> FlightTestResult.builder()
+        final List<FlightRawTestResult> flightRawTestResults = pricingFlightsRequests.stream()
+                .map(request -> FlightRawTestResult.builder()
                         .request(request)
                         .risk(pricingResponseFetcher.getPricingResponseForFlight(link, request).getProbability())
                         .dateTime(LocalDate.now())
@@ -64,17 +64,17 @@ public class FlightService extends AbstractService {
                 })
                 .collect(Collectors.toList());
 
-        return flightTestResults;
+        return flightRawTestResults;
     }
 
-    public List<SingleTestResult> getSingleTestResults(int quantity, String link) throws IOException {
-        final List<FlightTestResult> flightTestResults = getFlightTestResultByCsvFile(quantity, link);
+    public List<TransportationTestResult> getSingleTestResults(int quantity, String link) throws IOException {
+        final List<FlightRawTestResult> flightRawTestResults = getFlightTestResultByCsvFile(quantity, link);
 
-        List<SingleTestResult> singleTestResults = new ArrayList<>();
+        List<TransportationTestResult> transportationTestResults = new ArrayList<>();
 
-        flightTestResults.forEach(result -> {
+        flightRawTestResults.forEach(result -> {
             for (int i = 0; i < result.getRisk().size(); i++) {
-                singleTestResults.add(SingleTestResult.builder()
+                transportationTestResults.add(TransportationTestResult.builder()
                         .id(result.getRequest().getFlight().get(0).getId())
                         .date(LocalDateTime.now())
                         .delay(result.getRequest().getAlloweddelay().get(i))
@@ -84,10 +84,10 @@ public class FlightService extends AbstractService {
             }
         });
 
-        saveToCSV(singleTestResults, DP.Flight);
-        repository.saveAll(singleTestResults);
+        saveToCSVTransport(transportationTestResults, DP.Flight);
+        repository.saveAll(transportationTestResults);
 
-        return singleTestResults;
+        return transportationTestResults;
     }
 
     /*public List<Double> getRiskByOneRequest(PricingFlightsRequest request) {

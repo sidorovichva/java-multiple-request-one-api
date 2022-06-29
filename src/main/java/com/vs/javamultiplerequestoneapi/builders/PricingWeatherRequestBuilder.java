@@ -45,8 +45,8 @@ public class PricingWeatherRequestBuilder extends RequestBuilder {
                     .build();
 
             list.add(PricingWXRequest.builder()
-                    .amount(List.of(10.))
-                    .days(List.of("3"))
+                    .amount(List.of(1., 1., 1., 10., 10., 10., 100., 100., 100.))
+                    .days(List.of("2", "4", "8", "2", "4", "8", "2", "4", "8"))
                     .events(List.of(event))
                     .build());
 

@@ -1,9 +1,8 @@
 package com.vs.javamultiplerequestoneapi.controllers;
 
 import com.vs.javamultiplerequestoneapi.enums.DP;
-import com.vs.javamultiplerequestoneapi.models.requests.flights.PricingFlightsRequest;
-import com.vs.javamultiplerequestoneapi.models.requests.results.FlightTestResult;
-import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.raw.FlightRawTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.TransportationTestResult;
 import com.vs.javamultiplerequestoneapi.services.FlightService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,7 +18,7 @@ public class FlightController {
     private final FlightService service;
 
     @GetMapping("/getFlightTestResult")
-    public List<FlightTestResult> getFlightTestResultByCsvFile(
+    public List<FlightRawTestResult> getFlightTestResultByCsvFile(
             @RequestParam int quantity,
             @RequestParam String env
     ) throws IOException {
@@ -27,7 +26,7 @@ public class FlightController {
     }
 
     @GetMapping("/getFlightTestResultAndSave")
-    public List<SingleTestResult> getListOfSingleTestResults(
+    public List<TransportationTestResult> getListOfSingleTestResults(
             @RequestParam int quantity,
             @RequestParam String env
     ) throws IOException {

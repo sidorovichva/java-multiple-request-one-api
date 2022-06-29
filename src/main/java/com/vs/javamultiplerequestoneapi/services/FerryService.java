@@ -4,10 +4,9 @@ import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.fetchers.PricingResponseFetcher;
 import com.vs.javamultiplerequestoneapi.builders.PricingFerriesRequestBuilder;
 import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
-import com.vs.javamultiplerequestoneapi.models.requests.results.FerryTestResult;
-import com.vs.javamultiplerequestoneapi.models.requests.results.FlightTestResult;
-import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
-import com.vs.javamultiplerequestoneapi.repositories.SingleTestResultRepository;
+import com.vs.javamultiplerequestoneapi.models.results.raw.FerryRawTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.TransportationTestResult;
+import com.vs.javamultiplerequestoneapi.repositories.TransportationTestResultRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,13 +25,13 @@ public class FerryService extends AbstractService{
 
     private final PricingFerriesRequestBuilder ferriesRequestPreparation;
     private final PricingResponseFetcher pricingResponseFetcher;
-    private final SingleTestResultRepository repository;
+    private final TransportationTestResultRepository repository;
 
-    public List<FerryTestResult> getFerryTestResult(int quantity, String link, int delay) throws IOException {
-        List<PricingFerryRequest> listOfRequests = ferriesRequestPreparation.getListOfFerryRequests(quantity, delay);
+    public List<FerryRawTestResult> getFerryTestResult(int quantity, String link) throws IOException {
+        List<PricingFerryRequest> listOfRequests = ferriesRequestPreparation.getListOfFerryRequests(quantity);
 
         return listOfRequests.stream()
-                .map(request -> FerryTestResult.builder()
+                .map(request -> FerryRawTestResult.builder()
                                 .request(request)
                                 .risk(pricingResponseFetcher.getPricingResponseForFerry(link, request).getProbability())
                                 .dateTime(LocalDate.now())
@@ -47,27 +46,27 @@ public class FerryService extends AbstractService{
                 .collect(Collectors.toList());
     }
 
-    public List<SingleTestResult> getSingleTestResults(int quantity, String link, int delay) throws IOException {
-        final List<FerryTestResult> ferryTestResults = getFerryTestResult(quantity, link, delay);
+    public List<TransportationTestResult> getSingleTestResults(int quantity, String link) throws IOException {
+        final List<FerryRawTestResult> ferryRawTestResults = getFerryTestResult(quantity, link);
 
-        List<SingleTestResult> singleTestResults = new ArrayList<>();
+        List<TransportationTestResult> transportationTestResults = new ArrayList<>();
 
-        ferryTestResults.forEach(result -> {
+        ferryRawTestResults.forEach(result -> {
             for (int i = 0; i < result.getRisk().size(); i++) {
-                singleTestResults.add(SingleTestResult.builder()
+                transportationTestResults.add(TransportationTestResult.builder()
                         .id(result.getRequest().getItineraries().get(0).getId())
                         .date(LocalDateTime.now())
-                        .delay(result.getRequest().getDisruptions().get(0).getDelay().intValue())
-                        .notCancelled(result.getRequest().getDisruptions().get(0).isGivenNotCancelled())
+                        .delay(result.getRequest().getDisruptions().get(i).getDelay().intValue())
+                        .notCancelled(result.getRequest().getDisruptions().get(i).isGivenNotCancelled())
                         .risk(result.getRisk().get(i))
                         .build());
             }
         });
 
-        saveToCSV(singleTestResults, DP.Ferry);
-        repository.saveAll(singleTestResults);
+        saveToCSVTransport(transportationTestResults, DP.Ferry);
+        repository.saveAll(transportationTestResults);
 
-        return singleTestResults;
+        return transportationTestResults;
     }
 
     public List<Double> getRiskByOneRequest(PricingFerryRequest request, String link) {

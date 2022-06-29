@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.models.requests.results;
+package com.vs.javamultiplerequestoneapi.models.results;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class SingleTestResultCompositeKey implements Serializable {
+public class TestResultCompositeKey implements Serializable {
 
     private String id;
     private LocalDateTime date;

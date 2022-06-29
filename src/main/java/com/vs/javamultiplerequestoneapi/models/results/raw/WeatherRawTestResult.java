@@ -1,6 +1,5 @@
-package com.vs.javamultiplerequestoneapi.models.requests.results;
+package com.vs.javamultiplerequestoneapi.models.results.raw;
 
-import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
 import com.vs.javamultiplerequestoneapi.models.requests.weather.PricingWXRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class WeatherTestResult {
+public class WeatherRawTestResult {
 
     private LocalDate dateTime;
     private PricingWXRequest request;

@@ -1,5 +1,6 @@
 package com.vs.javamultiplerequestoneapi.models.requests.weather;
 
+import com.vs.javamultiplerequestoneapi.models.requests.PricingRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -14,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PricingWXRequest {
+public class PricingWXRequest implements PricingRequest {
     private List<Double> amount;
     private List<String> days;
     private List<WXEvent> events;

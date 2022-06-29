@@ -3,12 +3,10 @@ package com.vs.javamultiplerequestoneapi.services;
 import com.vs.javamultiplerequestoneapi.builders.PricingWeatherRequestBuilder;
 import com.vs.javamultiplerequestoneapi.enums.DP;
 import com.vs.javamultiplerequestoneapi.fetchers.PricingResponseFetcher;
-import com.vs.javamultiplerequestoneapi.models.requests.ferries.PricingFerryRequest;
-import com.vs.javamultiplerequestoneapi.models.requests.results.FerryTestResult;
-import com.vs.javamultiplerequestoneapi.models.requests.results.SingleTestResult;
-import com.vs.javamultiplerequestoneapi.models.requests.results.WeatherTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.WeatherTestResult;
+import com.vs.javamultiplerequestoneapi.models.results.raw.WeatherRawTestResult;
 import com.vs.javamultiplerequestoneapi.models.requests.weather.PricingWXRequest;
-import com.vs.javamultiplerequestoneapi.repositories.SingleTestResultRepository;
+import com.vs.javamultiplerequestoneapi.repositories.WeatherTestResultRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,13 +25,13 @@ public class WeatherService extends AbstractService {
 
     private final PricingWeatherRequestBuilder weatherRequestBuilder;
     private final PricingResponseFetcher pricingResponseFetcher;
-    private final SingleTestResultRepository repository;
+    private final WeatherTestResultRepository repository;
 
-    public List<WeatherTestResult> getWeatherTestResult(int quantity, String product, String link) throws IOException {
+    public List<WeatherRawTestResult> getWeatherTestResult(int quantity, String product, String link) throws IOException {
         List<PricingWXRequest> listOfRequests = weatherRequestBuilder.getListOfWeatherRequests(quantity);
 
         return listOfRequests.stream()
-                .map(request -> WeatherTestResult.builder()
+                .map(request -> WeatherRawTestResult.builder()
                         .request(request)
                         .risk(pricingResponseFetcher.getPricingResponseForWeather(request, product, link).getProbability())
                         .dateTime(LocalDate.now())
@@ -48,27 +46,27 @@ public class WeatherService extends AbstractService {
                 .collect(Collectors.toList());
     }
 
-    public List<SingleTestResult> getSingleTestResults(int quantity, String product, String link) throws IOException {
-        final List<WeatherTestResult> ferryTestResults = getWeatherTestResult(quantity, product, link);
+    public List<WeatherTestResult> getSingleTestResults(int quantity, String product, String link) throws IOException {
+        final List<WeatherRawTestResult> weatherRawTestResults = getWeatherTestResult(quantity, product, link);
 
-        List<SingleTestResult> singleTestResults = new ArrayList<>();
+        List<WeatherTestResult> weatherTestResults = new ArrayList<>();
 
-        ferryTestResults.forEach(result -> {
+        weatherRawTestResults.forEach(result -> {
             for (int i = 0; i < result.getRisk().size(); i++) {
-                singleTestResults.add(SingleTestResult.builder()
+                weatherTestResults.add(WeatherTestResult.builder()
                         .id(result.getRequest().getEvents().get(0).getId())
                         .date(LocalDateTime.now())
-                        .delay(0)
-                        .notCancelled(false)
+                        .amount(result.getRequest().getAmount().get(i))
+                        .days(Integer.parseInt(result.getRequest().getDays().get(i)))
                         .risk(result.getRisk().get(i))
                         .build());
             }
         });
 
-        saveToCSV(singleTestResults, DP.Weather);
-        repository.saveAll(singleTestResults);
+        saveToCSVWeather(weatherTestResults, DP.Weather);
+        repository.saveAll(weatherTestResults);
 
-        return singleTestResults;
+        return weatherTestResults;
     }
 
     public List<Double> getRiskByOneRequest(PricingWXRequest request, String product, String link) {

@@ -1,5 +1,6 @@
 package com.vs.javamultiplerequestoneapi.models.requests.flights;
 
+import com.vs.javamultiplerequestoneapi.models.requests.PricingRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PricingFlightsRequest {
+public class PricingFlightsRequest implements PricingRequest {
 
     private List<Flight> flight;
     private List<Integer> alloweddelay = new LinkedList<>();

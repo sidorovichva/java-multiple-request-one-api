@@ -1,5 +1,6 @@
 package com.vs.javamultiplerequestoneapi.models.requests.ferries;
 
+import com.vs.javamultiplerequestoneapi.models.requests.PricingRequest;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class PricingFerryRequest {
+public class PricingFerryRequest implements PricingRequest {
 
     private List<Disruption> disruptions = new ArrayList<>();
     private List<PricingFerryItinerary> itineraries = new ArrayList<>();

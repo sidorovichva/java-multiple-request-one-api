@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.models.requests.results;
+package com.vs.javamultiplerequestoneapi.models.results;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,20 +15,20 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@IdClass(SingleTestResultCompositeKey.class)
-public class SingleTestResult {
+@IdClass(TestResultCompositeKey.class)
+public class WeatherTestResult implements TestResult {
 
     @Id private String id;
     @Id private LocalDateTime date;
-    private Integer delay;
-    private Boolean notCancelled;
+    private Double amount;
+    private Integer days;
     private Double risk;
 
     public String csvHeader() {
-        return "id,date,delay,notCancelled,risk";
+        return "id,date,amount,days,risk";
     }
 
     public String toCsvRow() {
-        return id + ',' + date + ',' + delay + ',' + notCancelled + ',' + risk;
+        return id + ',' + date + ',' + amount + ',' + days + ',' + risk;
     }
 }

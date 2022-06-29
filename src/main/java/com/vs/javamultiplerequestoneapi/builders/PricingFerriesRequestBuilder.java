@@ -20,7 +20,7 @@ public class PricingFerriesRequestBuilder extends RequestBuilder {
     private static final boolean givenNotCancelled = true;
     private static final String countryPrefix = "GR";
 
-    public List<PricingFerryRequest> getListOfFerryRequests(int quantity, int delay) throws IOException {
+    public List<PricingFerryRequest> getListOfFerryRequests(int quantity) throws IOException {
 
         List<PricingFerryRequest> list = new ArrayList<>();
         int counter = 0;
@@ -66,7 +66,12 @@ public class PricingFerriesRequestBuilder extends RequestBuilder {
                     .build();
 
             Disruption disruption = Disruption.builder()
-                    .delay((double) delay)
+                    .delay(60.)
+                    .givenNotCancelled(givenNotCancelled)
+                    .build();
+
+            Disruption disruption2 = Disruption.builder()
+                    .delay(120.)
                     .givenNotCancelled(givenNotCancelled)
                     .build();
 
@@ -78,7 +83,7 @@ public class PricingFerriesRequestBuilder extends RequestBuilder {
                     .build();
 
             list.add(PricingFerryRequest.builder()
-                    .disruptions(List.of(disruption))
+                    .disruptions(List.of(disruption, disruption2))
                     .itineraries(List.of(itinerary))
                     .build());
 

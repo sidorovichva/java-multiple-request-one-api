@@ -1,4 +1,4 @@
-package com.vs.javamultiplerequestoneapi.models.requests.results;
+package com.vs.javamultiplerequestoneapi.models.results.raw;
 
 import com.vs.javamultiplerequestoneapi.models.requests.flights.PricingFlightsRequest;
 import lombok.AllArgsConstructor;
@@ -13,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class FlightTestResult {
+public class FlightRawTestResult {
 
     private LocalDate dateTime;
     private PricingFlightsRequest request;
