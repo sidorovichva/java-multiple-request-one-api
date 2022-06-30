@@ -40,13 +40,15 @@ public class PricingWeatherRequestBuilder extends RequestBuilder {
 
             PricingWXRequest.WXEvent event = PricingWXRequest.WXEvent.builder()
                     .id(cols[0])
-                    .date(DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDate.now().plusDays(Integer.parseInt(cols[4].substring(0, 2)))))
+                    .date(DateTimeFormatter.ofPattern("yyyyMMdd").format(LocalDate.now().plusDays(
+                            cols[4].length() > 1 ? Integer.parseInt(cols[4].substring(0, 2)) : Integer.parseInt(cols[4].substring(0, 1))))
+                    )
                     .location(location)
                     .build();
 
             list.add(PricingWXRequest.builder()
-                    .amount(List.of(1., 1., 1., 10., 10., 10., 100., 100., 100.))
-                    .days(List.of("2", "4", "8", "2", "4", "8", "2", "4", "8"))
+                    .amount(List.of(10., 10., 100., 100.))
+                    .days(List.of("4", "7", "4", "7"))
                     .events(List.of(event))
                     .build());
 
